@@ -3266,7 +3266,7 @@ lib.composeManyExtensions [
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pywavelets ];
           HDF5_DIR = lib.getDev pkgs.hdf5;
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
-          propagatedBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.hdf5 self.numpy self.numexpr ];
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.hdf5 self.numpy self.numexpr ];
         }
       );
 
@@ -3286,7 +3286,7 @@ lib.composeManyExtensions [
             self.absl-py
           ];
           HDF5_DIR = "${pkgs.hdf5}";
-          propagatedBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
             pkgs.hdf5
             self.google-auth-oauthlib
             self.tensorboard-plugin-wit
