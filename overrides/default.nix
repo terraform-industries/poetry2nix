@@ -356,12 +356,12 @@ lib.composeManyExtensions [
       bcrypt =
         let
           getCargoHash = version: {
-            "4.0.0" = "sha256-HvfRLyUhlXVuvxWrtSDKx3rMKJbjvuiMcDY6g+pYFS0=";
-            "4.0.1" = "sha256-lDWX69YENZFMu7pyBmavUZaalGvFqbHSHfkwkzmDQaY=";
-            "4.1.1" = "sha256-QYg1+DsZEdXB74vuS4SFvV0n5GXkuwHkOS9j1ogSTjA=";
-            "4.1.2" = "sha256-fTD1AKvyeni5ukYjK53gueKLey+rcIUjW/0R289xeb0=";
-            "4.1.3" = "sha256-Uag1pUuis5lpnus2p5UrMLa4HP7VQLhKxR5TEMfpK0s=";
-            "4.2.0" = "sha256-dOS9A3pTwXYkzPFFNh5emxJw7pSdDyY+mNIoHdwNdmg=";
+            "4.0.0" = "";
+            "4.0.1" = "";
+            "4.1.1" = "";
+            "4.1.2" = "";
+            "4.1.3" = "";
+            "4.2.0" = "";
           }.${version} or (
             lib.warn "Unknown bcrypt version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -377,7 +377,7 @@ lib.composeManyExtensions [
                 ++ lib.optionals (lib.versionAtLeast old.version "4") [ rustc cargo pkgs.rustPlatform.cargoSetupHook final.setuptools-rust ];
           } // lib.optionalAttrs (lib.versionAtLeast old.version "4") {
             cargoDeps =
-              pkgs.rustPlatform.fetchCargoTarball
+              pkgs.rustPlatform.fetchCargoVendor
                 {
                   inherit (old) src;
                   sourceRoot = "${old.pname}-${old.version}/src/_bcrypt";
@@ -584,37 +584,37 @@ lib.composeManyExtensions [
       cryptography =
         let
           getCargoHash = version: {
-            "35.0.0" = "sha256-tQoQfo+TAoqAea86YFxyj/LNQCiViu5ij/3wj7ZnYLI=";
-            "36.0.0" = "sha256-Y6TuW7AryVgSvZ6G8WNoDIvi+0tvx8ZlEYF5qB0jfNk=";
-            "36.0.1" = "sha256-kozYXkqt1Wpqyo9GYCwN08J+zV92ZWFJY/f+rulxmeQ=";
-            "36.0.2" = "1a0ni1a3dbv2dvh6gx2i54z8v5j9m6asqg97kkv7gqb1ivihsbp8";
-            "37.0.2" = "sha256-qvrxvneoBXjP96AnUPyrtfmCnZo+IriHR5HbtWQ5Gk8=";
-            "37.0.4" = "sha256-f8r6QclTwkgK20CNe9i65ZOqvSUeDc4Emv6BFBhh1hI";
-            "38.0.1" = "sha256-o8l13fnfEUvUdDasq3LxSPArozRHKVsZfQg9DNR6M6Q=";
-            "38.0.3" = "sha256-lzHLW1N4hZj+nn08NZiPVM/X+SEcIsuZDjEOy0OOkSc=";
-            "38.0.4" = "sha256-BN0kOblUwgHj5QBf52RY2Jx0nBn03lwoN1O5PEohbwY=";
-            "39.0.0" = "sha256-clorC0NtGukpE3DnZ84MSdGhJN+qC89DZPITZFuL01Q=";
-            "39.0.2" = "sha256-Admz48/GS2t8diz611Ciin1HKQEyMDEwHxTpJ5tZ1ZA=";
-            "40.0.0" = "sha256-/TBANavYria9YrBpMgjtFyqg5feBcloETcYJ8fdBgkI=";
-            "40.0.1" = "sha256-gFfDTc2QWBWHBCycVH1dYlCsWQMVcRZfOBIau+njtDU=";
-            "40.0.2" = "sha256-cV4GTfbVYanElXOVmynvrru2wJuWvnT1Z1tQKXdkbg0=";
-            "41.0.1" = "sha256-38q81vRf8QHR8lFRM2KbH7Ng5nY7nmtWRMoPWS9VO/U=";
-            "41.0.2" = "sha256-hkuoICa/suMXlr4u95JbMlFzi27lJqJRmWnX3nZfzKU=";
-            "41.0.3" = "sha256-LQu7waympGUs+CZun2yDQd2gUUAgyisKBG5mddrfSo0=";
-            "41.0.4" = "sha256-oXR8yBUgiA9BOfkZKBJneKWlpwHB71t/74b/5WpiKmw=";
-            "41.0.5" = "sha256-ABCK144//RUJ3AksFHEgqC+kHvoHl1ifpVuqMTkGNH8=";
-            "41.0.6" = "sha256-E7O0035BnJfTQeZNAN3Oz0fMbfj45htvnK8AHOzfdcY=";
-            "41.0.7" = "sha256-VeZhKisCPDRvmSjGNwCgJJeVj65BZ0Ge+yvXbZw86Rw=";
-            "42.0.1" = "sha256-Kq/TSoI1cm9Pwg5CulNlAADmxdq0oWbgymHeMErUtcE=";
-            "42.0.2" = "sha256-jw/FC5rQO77h6omtBp0Nc2oitkVbNElbkBUduyprTIc=";
-            "42.0.3" = "sha256-QBZLGXdQz2WIBlAJM+yBk1QgmfF4b3G0Y1I5lZmAmtU=";
-            "42.0.4" = "sha256-qaXQiF1xZvv4sNIiR2cb5TfD7oNiYdvUwcm37nh2P2M=";
-            "42.0.5" = "sha256-Pw3ftpcDMfZr/w6US5fnnyPVsFSB9+BuIKazDocYjTU=";
-            "42.0.6" = "sha256-q1nCn82wVfADPMYX2LCq7CpIIbMvFkqsXRYfhzGyvSg=";
-            "42.0.7" = "sha256-wAup/0sI8gYVsxr/vtcA+tNkBT8wxmp68FPbOuro1E4=";
-            "42.0.8" = "sha256-PgxPcFocEhnQyrsNtCN8YHiMptBmk1PUhEDQFdUR1nU=";
-            "43.0.0" = "sha256-TEQy8PrIaZshiBFTqR/OJp3e/bVM1USjcmpDYcjPJPM=";
-            "43.0.1" = "sha256-wiAHM0ucR1X7GunZX8V0Jk2Hsi+dVdGgDKqcYjSdD7Q=";
+            "35.0.0" = "";
+            "36.0.0" = "";
+            "36.0.1" = "";
+            "36.0.2" = "";
+            "37.0.2" = "";
+            "37.0.4" = "";
+            "38.0.1" = "";
+            "38.0.3" = "";
+            "38.0.4" = "";
+            "39.0.0" = "";
+            "39.0.2" = "";
+            "40.0.0" = "";
+            "40.0.1" = "";
+            "40.0.2" = "";
+            "41.0.1" = "";
+            "41.0.2" = "";
+            "41.0.3" = "";
+            "41.0.4" = "";
+            "41.0.5" = "";
+            "41.0.6" = "";
+            "41.0.7" = "";
+            "42.0.1" = "";
+            "42.0.2" = "";
+            "42.0.3" = "";
+            "42.0.4" = "";
+            "42.0.5" = "";
+            "42.0.6" = "";
+            "42.0.7" = "";
+            "42.0.8" = "";
+            "43.0.0" = "";
+            "43.0.1" = "";
           }.${version} or (
             lib.warn "Unknown cryptography version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -645,7 +645,7 @@ lib.composeManyExtensions [
               CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
             } // lib.optionalAttrs (lib.versionAtLeast old.version "3.5" && !isWheel) rec {
               cargoDeps =
-                pkgs.rustPlatform.fetchCargoTarball {
+                pkgs.rustPlatform.fetchCargoVendor {
                   inherit (old) src;
                   sourceRoot = "${old.pname}-${old.version}/${cargoRoot}";
                   name = "${old.pname}-${old.version}";
@@ -2004,34 +2004,34 @@ lib.composeManyExtensions [
             };
 
             cargoHash = {
-              "3.10.7" = "sha256-MACmdptHmnifBTfB5s+CY6npAOFIrh0zvrIImYghGsw=";
-              "3.10.6" = "sha256-SNdwqb47dJ084TMNsm2Btks1UCDerjSmSrQQUiGbx50=";
-              "3.10.5" = "sha256-yhLKw4BhdIHgcu4iVlXQlHk/8J+3NK6LlmSWbm/5y4Q=";
-              "3.10.4" = "sha256-3///vbnCUeMVi2Yej8IR3ensQntA+E0su0GxhMN+2Rs=";
-              "3.10.3" = "sha256-ilGq+/gPSuNwURUWy2ZxInzmUv+PxYMxd8esxrMpr2o=";
-              "3.9.10" = "sha256-2eRV+oZQvsWWJ4AUTeuE0CHtTHC6jNZiX/y5uXuwvns=";
-              "3.9.7" = "sha256-IwWbd7LE/t1UEo/bdC0bXl2K8hYyvDPbyHLBIurfb/8=";
-              "3.9.5" = "sha256-ErKqQXuSWUr3wav3SE6YpkCma3DLlV8VOsCjtvTf13M=";
-              "3.9.1" = "sha256-2eRV+oZQvsWWJ4AUTeuE0CHtTHC6jNZiX/y5uXuwvns=";
-              "3.9.0" = "sha256-BsRs7noHkpa74pVw5X1t+gA35XrJRBI33XYQIzXEtXA=";
-              "3.8.14" = "sha256-PTfwnQW4q9StMuLwy3yB14U8uRhKRe6n/hwpHCAYB3A=";
-              "3.8.13" = "sha256-L3qei2Qh1AXbfiZ0zh3CZ0HE8EYxFqp3xmw8g2TutXE=";
-              "3.8.12" = "sha256-OAF1qyHLy8c1o7FNKMwzuumq1bA7x1mFzSAS/Ml7M34=";
-              "3.8.11" = "sha256-/x+0/I3WFxPwVu2LliTgr42SuJX7VjOLe/SGai5OgAw=";
-              "3.8.10" = "sha256-AcrTEHv7GYtGe4fXYsM24ElrzfhnOxLYlaon1ZrlD4A=";
-              "3.8.9" = "sha256-ogkTRRykLF2dTOxilsfwsRH+Au/O0e1kL1e9sFOFLeY=";
-              "3.8.8" = "sha256-AK4HtqPKg2O2FeLHCbY9o+N1BV4QFMNaHVE1NaFYHa4=";
-              "3.8.7" = "sha256-JBO8nl0sC+XIn17vI7hC8+nA1HYI9jfvZrl9nCE3k1s=";
-              "3.8.6" = "sha256-8T//q6nQoZhh8oJWDCeQf3gYRew58dXAaxkYELY4CJM=";
-              "3.8.5" = "sha256-JtUCJ3TP9EKGcddeyW1e/72k21uKneq9SnZJeLvn9Os=";
-              "3.8.4" = "sha256-O2W9zO7qHWG+78T+uECICAmecaSIbTTJPktJIPZYElE=";
-              "3.8.3" = "sha256-oSZO4cN1sJKd0T7pYrKG63is8AZMKaLRZqj5UCVY/14=";
+              "3.10.7" = "";
+              "3.10.6" = "";
+              "3.10.5" = "";
+              "3.10.4" = "";
+              "3.10.3" = "";
+              "3.9.10" = "";
+              "3.9.7" = "";
+              "3.9.5" = "";
+              "3.9.1" = "";
+              "3.9.0" = "";
+              "3.8.14" = "";
+              "3.8.13" = "";
+              "3.8.12" = "";
+              "3.8.11" = "";
+              "3.8.10" = "";
+              "3.8.9" = "";
+              "3.8.8" = "";
+              "3.8.7" = "";
+              "3.8.6" = "";
+              "3.8.5" = "";
+              "3.8.4" = "";
+              "3.8.3" = "";
             }.${old.version};
 
           in
           {
             inherit src;
-            cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+            cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
               inherit src;
               name = "${old.pname}-${old.version}";
               sha256 = cargoHash;
@@ -3134,43 +3134,43 @@ lib.composeManyExtensions [
       rpds-py =
         let
           getCargoHash = version: {
-            "0.8.8" = "sha256-jg9oos4wqewIHe31c3DixIp6fssk742kqt4taWyOq4U=";
-            "0.8.10" = "sha256-D4pbEipVn1r5rrX+wDXi97nDZJyBlkdqhmbJSgQGTLU=";
-            "0.8.11" = "sha256-QZNm/b9s/qr3GHwe9wG7U9/AaQwSPHsQ0F2SFQdgPNo=";
-            "0.8.12" = "sha256-wywBytnfLBnBH2yYi2eLQjASDmFN9VqPABwMuSUxN0Q=";
-            "0.9.2" = "sha256-2LiQ+beFj9+kykObPNtqcg+F+8wBDzvWcauwDLHa7Yo=";
-            "0.10.0" = "sha256-FXjk1Y/Eol4d1xvwz0S42OycZV0cSHM36H+zjEmNPCQ=";
-            "0.10.2" = "sha256-X0Busta5y1ToLcF6/5ZiatP8m/nxFsVGW/ba0MS4hhg=";
-            "0.10.3" = "sha256-iWy6BHVsKsZB0SVrh3CVhryaavk4gAQVvRdu9xBiDRg=";
-            "0.10.4" = "sha256-JOzc6rB65oNhQqjuDNeSgRhvXg2fQDf5ogoYznaBj5Y=";
-            "0.10.5" = "sha256-WB1PaJod7Romvme+lcTR6lh9CAbg+67ptBj838b3KFc=";
-            "0.10.6" = "sha256-8bXCTrZErdE7JhuoudU/4dDndCMwvjy2a+2IY0DWDzg=";
-            "0.11.0" = "sha256-4q/m+8UKAH7q7Jr95vvpU/me0pzvYTivcFA+unfOeQ8=";
-            "0.12.0" = "sha256-jdr0xN3Pd/bCoKfLLFNGXHJ+G1ORAft6/W7VS3PbdHs=";
-            "0.13.0" = "sha256-bHfxiBSN7/SbZiyYRj01phwrpyH7Fa3xVaA3ceWZYCE=";
-            "0.13.1" = "sha256-Q6TNWCJYlHnka4N+Q2OcqSe1h066X9CZK9pUFxxUgrI=";
-            "0.13.2" = "sha256-jaLSrl0oT3Fo/F0FfLvA2wDJk/Fc3d7mBqwRqyWAOsg=";
-            "0.14.0" = "sha256-CXEmCxntkBI06JMBE4D5FD9GoWqq99d1xHBG/KOURL4=";
-            "0.14.1" = "sha256-5CKH+bbU0DGIw6v1/AsnGxsD7TidJ55lQHQuVSgbYTo=";
-            "0.14.2" = "sha256-bWFUuoi/IgIrC/g9TwDAiMvpPKe6+r/xdLf2GZIhMyE=";
-            "0.15.0" = "sha256-jFpRXcLBZJ2ZFiV3TDN4qrAi2IcJEKcPnOlU6txXqoU=";
-            "0.15.1" = "sha256-OAkKmSHhKwLkx77I7lSmJyjchIt1kAgGISfIWiqPkM8=";
-            "0.15.2" = "sha256-4hkJ39jN2V74/eJ/MQmLAx8s0DnQTfsdN1bU4Fvfiq4=";
-            "0.16.0" = "sha256-I1F9BS+0pQ7kufcK5dxfHj0LrVR8r8xM6k8mtf7emZ4=";
-            "0.16.1" = "sha256-aSXLPkRGrvyp5mLDnG2D8ZPgG9a3fX+g1KVisNtRadc=";
-            "0.16.2" = "sha256-aPmi/5UAkePf4nC2zRjXY+vZsAsiRZqTHyZZmzFHcqE=";
-            "0.17.1" = "sha256-sFutrKLa2ISxtUN7hmw2P02nl4SM6Hn4yj1kkXrNWmI=";
-            "0.18.0" = "sha256-wd1teRDhjQWlKjFIahURj0iwcfkpyUvqIWXXscW7eek=";
-            "0.18.1" = "sha256-caNEmU3K5COYa/UImE4BZYaFTc3Csi3WmnBSbFN3Yn8=";
-            "0.19.0" = "sha256-H9IAg4lh7cmGaML5PuyYoe026pBNhOyvb/cf+oZcv0c=";
-            "0.19.1" = "sha256-qIXdoCEVGCGUnTicZp4bUTJyGpFy9dwWY03lXUbxiHg=";
-            "0.20.0" = "sha256-5vbR2EbrAPJ8pb78tj/+r9nOWgQDT5aO/LUQI4kAGjU=";
+            "0.8.8" = "";
+            "0.8.10" = "";
+            "0.8.11" = "";
+            "0.8.12" = "";
+            "0.9.2" = "";
+            "0.10.0" = "";
+            "0.10.2" = "";
+            "0.10.3" = "";
+            "0.10.4" = "";
+            "0.10.5" = "";
+            "0.10.6" = "";
+            "0.11.0" = "";
+            "0.12.0" = "";
+            "0.13.0" = "";
+            "0.13.1" = "";
+            "0.13.2" = "";
+            "0.14.0" = "";
+            "0.14.1" = "";
+            "0.14.2" = "";
+            "0.15.0" = "";
+            "0.15.1" = "";
+            "0.15.2" = "";
+            "0.16.0" = "";
+            "0.16.1" = "";
+            "0.16.2" = "";
+            "0.17.1" = "";
+            "0.18.0" = "";
+            "0.18.1" = "";
+            "0.19.0" = "";
+            "0.19.1" = "";
+            "0.20.0" = "";
           }.${version} or (
             lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
         in
         prev.rpds-py.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
-          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+          cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
             inherit (old) src;
             name = "${old.pname}-${old.version}";
             hash = getCargoHash old.version;
@@ -3290,111 +3290,111 @@ lib.composeManyExtensions [
               # https://raw.githubusercontent.com/astral-sh/ruff/0.6.1/Cargo.lock
               lockFile = ./ruff/0.6.1-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
-                "salsa-0.18.0" = "sha256-Gu7YVqEDJUSzBqTeZH1xU0b3CWsWZrEvjIg7QpUaKBw=";
+                "lsp-types-0.95.1" = "";
+                "salsa-0.18.0" = "";
               };
             };
             "0.6.0" = {
               # https://raw.githubusercontent.com/astral-sh/ruff/0.6.0/Cargo.lock
               lockFile = ./ruff/0.6.0-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
-                "salsa-0.18.0" = "sha256-Gu7YVqEDJUSzBqTeZH1xU0b3CWsWZrEvjIg7QpUaKBw=";
+                "lsp-types-0.95.1" = "";
+                "salsa-0.18.0" = "";
               };
             };
             "0.5.7" = {
               # https://raw.githubusercontent.com/astral-sh/ruff/0.5.7/Cargo.lock
               lockFile = ./ruff/0.5.7-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
-                "salsa-0.18.0" = "sha256-Gu7YVqEDJUSzBqTeZH1xU0b3CWsWZrEvjIg7QpUaKBw=";
+                "lsp-types-0.95.1" = "";
+                "salsa-0.18.0" = "";
               };
             };
             "0.5.6" = {
               # https://raw.githubusercontent.com/astral-sh/ruff/0.5.6/Cargo.lock
               lockFile = ./ruff/0.5.6-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
-                "salsa-0.18.0" = "sha256-y5PuGeQNUHLhU8YY9wPbGk71eNZ0aM0Xpvwfyf+UZwM=";
+                "lsp-types-0.95.1" = "";
+                "salsa-0.18.0" = "";
               };
             };
             "0.5.1" = {
               # https://raw.githubusercontent.com/astral-sh/ruff/0.5.1/Cargo.lock
               lockFile = ./ruff/0.5.1-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
-                "salsa-0.18.0" = "sha256-gcaAsrrJXrWOIHUnfBwwuTBG1Mb+lUEmIxSGIVLhXaM=";
+                "lsp-types-0.95.1" = "";
+                "salsa-0.18.0" = "";
               };
             };
             "0.5.0" = {
               # https://raw.githubusercontent.com/astral-sh/ruff/0.5.0/Cargo.lock
               lockFile = ./ruff/0.5.0-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
-                "salsa-0.18.0" = "sha256-keVEmSwV1Su1RlOTaIu253FZidk279qA+rXcCeuOggc=";
+                "lsp-types-0.95.1" = "";
+                "salsa-0.18.0" = "";
               };
             };
             "0.4.10" = {
               # https://raw.githubusercontent.com/astral-sh/ruff/v0.4.10/Cargo.lock
               lockFile = ./ruff/0.4.10-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
-                "salsa-2022-0.1.0" = "sha256-mt+X1hO+5ZrCAgy6N4aArnixJ9GjY/KwM0uIMUSrDsg=";
+                "lsp-types-0.95.1" = "";
+                "salsa-2022-0.1.0" = "";
               };
             };
             "0.4.9" = {
               # https://raw.githubusercontent.com/astral-sh/ruff/v0.4.9/Cargo.lock
               lockFile = ./ruff/0.4.9-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
-                "salsa-2022-0.1.0" = "sha256-mt+X1hO+5ZrCAgy6N4aArnixJ9GjY/KwM0uIMUSrDsg=";
+                "lsp-types-0.95.1" = "";
+                "salsa-2022-0.1.0" = "";
               };
             };
             "0.4.8" = {
               # https://github.com/astral-sh/ruff/blob/v0.4.8/Cargo.lock
               lockFile = ./ruff/0.4.8-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                "lsp-types-0.95.1" = "";
               };
             };
             "0.4.7" = {
               # https://github.com/astral-sh/ruff/blob/v0.4.7/Cargo.lock
               lockFile = ./ruff/0.4.7-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                "lsp-types-0.95.1" = "";
               };
             };
             "0.4.6" = {
               # https://github.com/astral-sh/ruff/blob/v0.4.6/Cargo.lock
               lockFile = ./ruff/0.4.6-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                "lsp-types-0.95.1" = "";
               };
             };
             "0.4.5" = {
               # https://github.com/astral-sh/ruff/blob/v0.4.5/Cargo.lock
               lockFile = ./ruff/0.4.5-Cargo.lock;
               outputHashes = {
-                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                "lsp-types-0.95.1" = "";
               };
             };
-            "0.4.4" = "sha256-K0iSCJNQ71/VfDL4LfqNHTqTfaVT/43zXhR5Kg80KvU=";
-            "0.4.3" = "sha256-/ZjZjcYWdJH9NuKKohNxSYLG3Vdq2RylnCMHHr+5MtY=";
-            "0.4.2" = "sha256-KpB5xHPuk5qb2yDHfe9U95qNMgW0PHX9RJcOOkKREsY=";
-            "0.4.1" = "sha256-H2ULx1UXkRmCyC7fky394Q8z3HZaNbwF7IqAidY6/Ac=";
-            "0.4.0" = "sha256-FRDnTv+3pn/eV/TJ+fdHiWIttcKZ8VDgF3ELjxqZp14=";
-            "0.3.7" = "sha256-T5lYoWV9HdwN22ADi6ce66LM8XEOuqHx/ocTPhnl1Hk=";
-            "0.3.6" = "sha256-OcZRrARGVcPUatDzmWVLHjpTaJbLd0XjAyNXMzNBxP8=";
-            "0.3.5" = "sha256-ckKG2kNxUt/mJq4DBk+E2aee6xx+/S50z2Cxfqni6io=";
-            "0.3.4" = "sha256-trCl2IBPh33vZ14PGLxxItb1S0/6UXnF1GMFNwvlnZA=";
-            "0.3.3" = "sha256-OY7KkI6DjiGlc/bV1/1Lx4AdxuGnJxL+LLj1gnV7Ibs=";
-            "0.3.2" = "sha256-3Z1rr70goiYpHn6knO2KgjXwOMwD3EhY3PwsdGqKNhM=";
-            "0.3.1" = "sha256-DPynb9T4M5Hf3YfTARybJsvpvgQuuLZ+dGSG6v5YJYE=";
-            "0.3.0" = "sha256-tyMw1Io8FpyOWWwkQu8HK1nEmOns/aKm2GtLI8B7NBc=";
-            "0.2.2" = "sha256-LgKiUWd7mWVuZDsnM+1KVS5Trze4Funh2w8cILzsRY8=";
-            "0.2.1" = "sha256-atuZw8TML/CujTsXGLdSoahP1y04qdxjcmiNVLy0fns=";
-            "0.2.0" = "sha256-zlatDyCWZr4iFY0fVCzhQmUGJxKMQvZd6HAt0PFlMwY=";
-            "0.1.15" = "sha256-M6qGG/JniEdNO2Qcw7u52JUJahucgiZcjWOaq50E6Ns=";
+            "0.4.4" = "";
+            "0.4.3" = "";
+            "0.4.2" = "";
+            "0.4.1" = "";
+            "0.4.0" = "";
+            "0.3.7" = "";
+            "0.3.6" = "";
+            "0.3.5" = "";
+            "0.3.4" = "";
+            "0.3.3" = "";
+            "0.3.2" = "";
+            "0.3.1" = "";
+            "0.3.0" = "";
+            "0.2.2" = "";
+            "0.2.1" = "";
+            "0.2.0" = "";
+            "0.1.15" = "";
           }.${version} or (
             lib.warn "Unknown ruff version: '${version}'. Please update getCargoHash." null
           );
@@ -3418,7 +3418,7 @@ lib.composeManyExtensions [
                       lockFile = "${src.out}/Cargo.lock";
                     } // (if hash == null then { } else hash)
                   ) else
-                pkgs.rustPlatform.fetchCargoTarball {
+                pkgs.rustPlatform.fetchCargoVendor {
                   name = "ruff-${old.version}-cargo-deps";
                   inherit src hash;
                 };
@@ -3835,12 +3835,12 @@ lib.composeManyExtensions [
 
           getCargoHash = version: {
             "0.24.0".outputHashes = {
-             "notify-6.1.1" = "sha256-lT3R5ZQpjx52NVMEKTTQI90EWT16YnbqphqvZmNpw/I=";
+             "notify-6.1.1" = "";
             };
-            "0.23.0" = "sha256-m7XFpbujWFmDNSDydY3ec6b+AGgrfo3+TTbRN7te8bY=";
-            "0.22.0" = "sha256-pl5BBOxrxvPvBJTnTqvWNFecoJwfyuAs4xZEgmg+T+w=";
-            "0.21.0" = "sha256-KDm1nGeg4oDcbopedPfzalK2XO1c1ZQUZu6xhfRdQx4=";
-            "0.20.0" = "sha256-ChUs7YJE1ZEIONhUUbVAW/yDYqqUR/k/k10Ce7jw8Xo=";
+            "0.23.0" = "";
+            "0.22.0" = "";
+            "0.21.0" = "sha256-zoq9LXoToM4NmFRYHapUrUbIxCcS/mj5yZVtmU4/Xv0=";
+            "0.20.0" = "";
           }.${version} or (
             lib.warn "Unknown watchfiles version: '${version}'. Please update getCargoHash." null
           );
@@ -3860,7 +3860,7 @@ lib.composeManyExtensions [
                   ({
                     lockFile = "${src.out}/Cargo.lock";
                   } // (lib.optionalAttrs (lib.isAttrs hash) hash)) else
-                pkgs.rustPlatform.fetchCargoTarball {
+                pkgs.rustPlatform.fetchCargoVendor {
                   name = "watchfiles-${old.version}-cargo-deps";
                   inherit src hash;
                 };
