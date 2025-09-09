@@ -31,7 +31,7 @@ let
         else if matchedEgg != null then elemAt matchedEgg 2
         else "source";
     in
-    "https://files.pythonhosted.org/packages/${kind}/${toLower (substring 0 1 file)}/${pname}/${file}";
+    "https://files.pythonhosted.org/packages/${kind}/${substring 0 1 file}/${pname}/${file}";
 in
 lib.mapAttrs (_: func: lib.makeOverridable func) {
   /*
