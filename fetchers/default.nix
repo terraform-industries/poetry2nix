@@ -62,7 +62,7 @@ lib.mapAttrs (_: func: lib.makeOverridable func) {
     stdenvNoCC.mkDerivation {
       name = file;
       nativeBuildInputs = [
-        pkgs.curl
+        pkgs.curl815
         pkgs.jq
       ];
       isWheel = lib.strings.hasSuffix "whl" file;
