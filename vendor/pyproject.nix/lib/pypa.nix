@@ -390,6 +390,15 @@ lib.fix (self: {
             # Extract the tag as a number. E.g. "37" is `toInt "37"` and "none"/"any" is 0
             languageTags' = map (tag: if tag == "none" then 0 else toInt tag.version) languageTags;
 
+            # Prefer macOS wheels with specific architectures over universal2 (tag-based only)
+            macArchPreference =
+              let
+                macArchs = filter isString (map (
+                  tag:
+                  let m = match "macosx_([0-9]+)_([0-9]+)_(.+)" tag; in if m != null then elemAt m 2 else null
+                ) file.platformTags);
+              in if lib.any (arch: arch != "universal2") macArchs then 1 else 0;
+
           in
           {
             bestLanguageTag = head (sort (x: y: x > y) languageTags');
@@ -398,6 +407,7 @@ lib.fix (self: {
               && length languageTags > 0
               && lib.any (self.isPlatformTagCompatible platform python.stdenv.cc.libc) file.platformTags;
             inherit file;
+            inherit macArchPreference;
           }
         ) files;
 
@@ -411,6 +421,7 @@ lib.fix (self: {
           || x.file.version > y.file.version
           || (x.file.buildTag != null && (y.file.buildTag == null || x.file.buildTag > y.file.buildTag))
           || x.bestLanguageTag > y.bestLanguageTag
+          || x.macArchPreference > y.macArchPreference
         ) compatibleFiles;
 
       in
