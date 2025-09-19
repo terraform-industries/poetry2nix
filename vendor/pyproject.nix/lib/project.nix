@@ -9,8 +9,6 @@
 }:
 
 let
-  inherit (builtins) mapAttrs;
-
   # Map over renderers and inject project argument.
   # This allows for a user interface like:
   # project.renderers.buildPythonPackage { } where project is already curried.
@@ -24,7 +22,7 @@ let
   # Package manager specific extensions.
   # Remap extension fields to optional-dependencies
   uvListPaths = {
-    "tool.uv.dev-dependencies" = "dev-dependencies";
+    "tool.uv.dev-dependencies" = "dev";
   };
   pdmAttrPaths = [ "tool.pdm.dev-dependencies" ];
 
@@ -53,11 +51,23 @@ lib.fix (self: {
       extrasAttrPaths ? [ ],
       # Example: extrasListPaths = { "tool.uv.dependencies.dev-dependencies" = "dev-dependencies"; }
       extrasListPaths ? { },
+      # Example: extrasAttrPaths = [ "tool.pdm.dev-dependencies" ];
+      groupsAttrPaths ? [ ],
+      # Example: extrasListPaths = { "tool.uv.dependencies.dev-dependencies" = "dev-dependencies"; }
+      groupsListPaths ? { },
       # Path to project root
       projectRoot ? null,
     }:
     lib.fix (project: {
-      dependencies = pep621.parseDependencies { inherit pyproject extrasAttrPaths extrasListPaths; };
+      dependencies = pep621.parseDependencies {
+        inherit
+          pyproject
+          extrasAttrPaths
+          extrasListPaths
+          groupsAttrPaths
+          groupsListPaths
+          ;
+      };
       inherit pyproject projectRoot;
       renderers = curryProject renderers project;
       validators = curryProject validators project;
@@ -88,7 +98,7 @@ lib.fix (self: {
     }:
     self.loadPyproject {
       inherit pyproject projectRoot;
-      extrasListPaths = uvListPaths;
+      groupsListPaths = uvListPaths;
     };
 
   /*
@@ -112,15 +122,10 @@ lib.fix (self: {
       pyproject ? lib.importTOML (projectRoot + "/pyproject.toml"),
       # Path to project root
       projectRoot ? null,
-      # The unmarshaled contents of pdm.lock
-      pdmLock ? lib.importTOML (projectRoot + "/pdm.lock"),
     }:
     self.loadPyproject {
       inherit pyproject projectRoot;
       extrasAttrPaths = pdmAttrPaths;
-    }
-    // {
-      inherit pdmLock;
     };
 
   /*
@@ -144,8 +149,6 @@ lib.fix (self: {
       pyproject ? lib.importTOML (projectRoot + "/pyproject.toml"),
       # Path to project root
       projectRoot ? null,
-      # The unmarshaled contents of poetry.lock
-      poetryLock ? lib.importTOML (projectRoot + "/poetry.lock"),
     }:
     let
       pyproject-pep621 = poetry.translatePoetryProject pyproject;
@@ -156,7 +159,7 @@ lib.fix (self: {
       pyproject-poetry = pyproject;
       renderers = curryProject renderers project;
       validators = curryProject validators project;
-      inherit projectRoot poetryLock;
+      inherit projectRoot;
       requires-python = null;
     });
 
@@ -230,7 +233,7 @@ lib.fix (self: {
     else if isPep621 then
       self.loadPyproject {
         inherit pyproject projectRoot;
-        extrasListPaths = uvListPaths;
+        groupsListPaths = uvListPaths;
         extrasAttrPaths = pdmAttrPaths;
       }
     else

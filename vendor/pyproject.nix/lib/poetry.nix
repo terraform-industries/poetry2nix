@@ -3,6 +3,7 @@
   pep440,
   pep508,
   pep518,
+  pypa,
   ...
 }:
 
@@ -21,6 +22,7 @@ lib.fix (
       length
       filter
       split
+      concatStringsSep
       ;
     inherit (lib) optionalAttrs concatLists;
     inherit (import ./util.nix { inherit lib; }) splitComma;
@@ -159,7 +161,7 @@ lib.fix (
 
       in
       {
-        inherit (dep) name;
+        name = pypa.normalizePackageName dep.name;
         conditions = if dep ? version then self.parseVersionConds dep.version else [ ];
         extras = dep.extras or [ ];
         url = dep.url or null;
@@ -189,22 +191,21 @@ lib.fix (
       in
       pyproject
       // {
-        project =
-          {
-            inherit (poetry) name version description;
-            authors = map translateAuthor poetry.authors;
-            urls =
-              optionalAttrs (poetry ? homepage) { Homepage = poetry.homepage; }
-              // optionalAttrs (poetry ? repository) { Repository = poetry.repository; }
-              // optionalAttrs (poetry ? documentation) { Documentation = poetry.documentation; };
-          }
-          // optionalAttrs (poetry ? license) { license.text = poetry.license; }
-          // optionalAttrs (poetry ? maintainers) { maintainers = map translateAuthor poetry.maintainers; }
-          // optionalAttrs (poetry ? readme) { inherit (poetry) readme; }
-          // optionalAttrs (poetry ? keywords) { inherit (poetry) keywords; }
-          // optionalAttrs (poetry ? classifiers) { inherit (poetry) classifiers; }
-          // optionalAttrs (poetry ? scripts) { inherit (poetry) scripts; }
-          // optionalAttrs (poetry ? plugins) { entry-points = poetry.plugins; };
+        project = {
+          inherit (poetry) name version description;
+          authors = map translateAuthor poetry.authors;
+          urls =
+            optionalAttrs (poetry ? homepage) { Homepage = poetry.homepage; }
+            // optionalAttrs (poetry ? repository) { Repository = poetry.repository; }
+            // optionalAttrs (poetry ? documentation) { Documentation = poetry.documentation; };
+        }
+        // optionalAttrs (poetry ? license) { license.text = poetry.license; }
+        // optionalAttrs (poetry ? maintainers) { maintainers = map translateAuthor poetry.maintainers; }
+        // optionalAttrs (poetry ? readme) { inherit (poetry) readme; }
+        // optionalAttrs (poetry ? keywords) { inherit (poetry) keywords; }
+        // optionalAttrs (poetry ? classifiers) { inherit (poetry) classifiers; }
+        // optionalAttrs (poetry ? scripts) { inherit (poetry) scripts; }
+        // optionalAttrs (poetry ? plugins) { entry-points = poetry.plugins; };
       };
 
     /*
@@ -234,6 +235,9 @@ lib.fix (
         _: group: map parseDependency (normalizeDependendenciesToList group.dependencies)
       ) pyproject.tool.poetry.group or { };
       build-systems = pep518.parseBuildSystems pyproject;
+
+      # PEP-735 dependency groups
+      groups = { };
     };
 
     /*
@@ -269,7 +273,7 @@ lib.fix (
             }
             {
               op = "<";
-              version = version // {
+              version = version // rec {
                 release = lib.imap0 (
                   i: tok:
                   if i >= segments - 1 then
@@ -279,6 +283,7 @@ lib.fix (
                   else
                     tok
                 ) version.release;
+                str = concatStringsSep "." (map toString release); # Overwrite with upper bounds
               };
             }
           ]
@@ -291,8 +296,9 @@ lib.fix (
             }
             {
               op = "<";
-              version = version // {
+              version = version // rec {
                 release = rewriteCaretRhs version.release;
+                str = concatStringsSep "." (map toString release); # Overwrite with upper bounds
               };
             }
           ]
