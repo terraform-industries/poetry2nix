@@ -289,7 +289,7 @@ lib.fix (self: {
             (arch == "universal2" && (platform.darwinArch == "arm64" || platform.darwinArch == "x86_64"))
             || arch == platform.darwinArch
           )
-          && compareVersions platform.darwinSdkVersion "${major}.${minor}" >= 0
+          # && compareVersions platform.darwinSdkVersion "${major}.${minor}" >= 0
         )
       )
     else if platformTag == "win32" then
